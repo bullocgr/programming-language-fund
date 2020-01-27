@@ -115,13 +115,23 @@ valueAt (h:t) (Node x t1 t2) = if (h == L) then valueAt t t1 else valueAt t t2
 --   Nothing
 --
 pathTo :: Eq a => a -> Tree a -> Maybe Path
-pathTo n End = Nothing
-pathTo n (Node x t1 t2) = if n == x then Just [] else
-                          if pathTo n t1 /= Nothing then Just (L : getMaybe (pathTo n t1) ) else 
-                          if pathTo n t2 /= Nothing then Just (R : getMaybe (pathTo n t2) ) else Nothing
+-- pathTo n End = Nothing
+-- pathTo n (Node x t1 t2) = if n == x then Just [] else
+--                           if pathTo n t1 /= Nothing then Just (L : getMaybe (pathTo n t1) ) else 
+--                           if pathTo n t2 /= Nothing then Just (R : getMaybe (pathTo n t2) ) else Nothing
 
-getMaybe :: Maybe a -> a
-getMaybe (Just x) = x
+pathTo x End = Nothing
+pathTo x (Node y l r)
+    | x == y = Just []
+    | otherwise = case pathTo x l of
+        Just p -> Just (L:p)
+        Nothing -> case pathTo x r of
+            Just p -> Just(R:p)
+            Nothing -> Nothing
+
+-- getMaybe :: Maybe a -> a
+-- getMaybe (Just x) = x
+
 
 
 
